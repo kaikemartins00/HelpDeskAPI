@@ -1,0 +1,12 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: helpdesk-db
+
+    environment:
+      POSTGRES_DB: helpdesk
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+
+    ports:
+      - "5432:5432"

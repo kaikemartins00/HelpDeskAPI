@@ -1,0 +1,42 @@
+# ===== Java / Spring Boot =====
+*.class
+*.log
+
+# Maven
+target/
+*.jar
+*.war
+*.ear
+
+# Gradle
+.gradle/
+build/
+
+# ===== IntelliJ =====
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# ===== Eclipse =====
+.project
+.classpath
+.settings/
+
+# ===== VS Code =====
+.vscode/
+
+# ===== Sistema =====
+.DS_Store
+Thumbs.db
+
+# ===== Logs =====
+logs/
+*.log
+
+# ===== Spring Boot =====
+application-local.properties
+application-dev.properties
+
+# ===== Environment =====
+.env
