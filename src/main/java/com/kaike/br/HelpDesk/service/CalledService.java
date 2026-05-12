@@ -1,13 +1,13 @@
 package com.kaike.br.HelpDesk.service;
 
-import com.kaike.br.HelpDesk.database.model.CalledEntity;
-import com.kaike.br.HelpDesk.database.model.CalledPriority;
-import com.kaike.br.HelpDesk.database.model.CalledStatus;
+import com.kaike.br.HelpDesk.database.model.*;
 import com.kaike.br.HelpDesk.dto.CalledDto;
 import com.kaike.br.HelpDesk.dto.CalledUpdateDto;
 import com.kaike.br.HelpDesk.exception.BusinessException;
 import com.kaike.br.HelpDesk.exception.ResourceNotFoundException;
 import com.kaike.br.HelpDesk.repository.CalledRepository;
+import com.kaike.br.HelpDesk.repository.TechnicalRepository;
+import com.kaike.br.HelpDesk.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +18,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CalledService {
     private final CalledRepository repository;
+    private final UserRepository userRepository;
+    private final TechnicalRepository technicalRepository;
 
     private CalledDto toDTO(CalledEntity entity) {
+
         return CalledDto.builder()
                 .id(entity.getId())
                 .title(entity.getTitle())
@@ -28,6 +31,10 @@ public class CalledService {
                 .status(entity.getStatus())
                 .openingDate(entity.getOpeningDate())
                 .observation(entity.getObservation())
+
+                .userId(entity.getUser().getId())
+                .technicalId(entity.getTechnical().getId())
+
                 .build();
     }
 
@@ -40,10 +47,18 @@ public class CalledService {
 
     public CalledDto saveCalled(CalledDto dto) {
 
+        UserEntity user = userRepository.findById(dto.getUserId())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        TechnicalEntity technical = technicalRepository.findById(dto.getTechnicalId())
+                .orElseThrow(() -> new ResourceNotFoundException("Technical not found"));
+
         CalledEntity entity = CalledEntity.builder()
                 .title(dto.getTitle())
                 .description(dto.getDescription())
                 .observation(dto.getObservation())
+                .user(user)
+                .technical(technical)
                 .build();
 
         entity.setStatus(CalledStatus.OPEN);

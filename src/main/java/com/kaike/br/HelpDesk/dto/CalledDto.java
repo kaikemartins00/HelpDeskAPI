@@ -25,5 +25,7 @@ public class CalledDto {
     private Instant openingDate;
     @NotBlank
     private String observation;
+    private Long userId;
+    private Long technicalId;
 
 }
